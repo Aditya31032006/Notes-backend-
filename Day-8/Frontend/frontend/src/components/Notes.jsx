@@ -22,7 +22,7 @@ const Notes = () => {
 
   axios.get('http://localhost:3000/api/notes')
     .then((res)=>{
-      console.log(res.data);
+      setnotes(res.data.notes);
       
     })
   
