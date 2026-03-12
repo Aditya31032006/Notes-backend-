@@ -1,20 +1,63 @@
+/* page background */
+
 body{
   margin:0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg,#667eea,#764ba2);
   min-height:100vh;
-
   display:flex;
   justify-content:center;
-  align-items:center;
+  align-items:flex-start;
+  padding-top:40px;
 }
+
+
+/* form */
+
+form{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 10px 20px rgba(0,0,0,0.15);
+  display:flex;
+  gap:10px;
+  margin-bottom:30px;
+}
+
+form input{
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  outline:none;
+  font-size:14px;
+}
+
+form button{
+  background:#667eea;
+  color:white;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+form button:hover{
+  background:#5568d9;
+}
+
+
+/* notes container */
 
 .notes-container{
   display:grid;
-  grid-template-columns: repeat(2, 260px);
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
   gap:20px;
-  justify-content:center;
+  width:900px;
 }
+
+
+/* card */
 
 .note-card{
   background:white;
@@ -29,13 +72,59 @@ body{
   box-shadow:0 15px 25px rgba(0,0,0,0.2);
 }
 
+
+/* title */
+
 .note-card h1{
-  font-size:20px;
-  margin-bottom:10px;
+  font-size:18px;
+  margin-bottom:8px;
   color:#333;
 }
 
+
+/* description */
+
 .note-card p{
   color:#666;
-  line-height:1.5;
+  font-size:14px;
+  margin-bottom:12px;
+}
+
+
+/* buttons */
+
+.note-card button{
+  border:none;
+  padding:7px 12px;
+  margin-right:8px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:13px;
+}
+
+
+/* edit button */
+
+.note-card button:first-of-type{
+  background:#f1c40f;
+  color:#000;
+}
+
+
+/* delete button */
+
+.note-card button:last-of-type{
+  background:#e74c3c;
+  color:white;
+}
+
+
+/* edit inputs */
+
+.note-card input{
+  width:100%;
+  margin-bottom:8px;
+  padding:8px;
+  border:1px solid #ddd;
+  border-radius:6px;
 }
