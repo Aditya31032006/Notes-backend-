@@ -1,65 +1,62 @@
-const express = require("express")
-const app =express()
-const noteModel =require("./model/notes.model")
-const cors =require("cors")
-const path =require("path")
+const express = require("express");
+const app = express();
+const noteModel = require("./model/notes.model");
+const cors = require("cors");
+const path = require("path");
 
+app.use(cors());
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; worker-src blob:",
+  );
+  next();
+});
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "..", "public")));
+app.post("/api/notes", async (req, res) => {
+  const { title, description } = req.body;
 
-app.use(cors())
-app.use(express.json())
-app.use(express.static(path.join(__dirname,"..","public")))
-app.post("/api/notes", async(req,res)=>{
-    const {title,description}=req.body
+  const note = await noteModel.create({
+    title,
+    description,
+  });
 
-    const note=await noteModel.create({
-        title, description
-    })
+  res.status(201).json({
+    message: "note created ",
+    note,
+  });
+});
 
-    res.status(201).json(
-        {
-            message: "note created ",
-            note
-        }
-    )
-})
+app.get("/api/notes", async (req, res) => {
+  // const {title,description}=req.body
 
-app.get("/api/notes", async(req,res)=>{
-    // const {title,description}=req.body
+  const notes = await noteModel.find();
 
-    const notes=await noteModel.find()
+  res.status(200).json({
+    message: "note fetched",
+    notes,
+  });
+});
 
-    res.status(200).json(
-        {
-            message: "note fetched",
-            notes
-        }
-    )
-})
+app.delete("/api/notes/:id", async (req, res) => {
+  await noteModel.findByIdAndDelete(req.params.id);
 
+  res.status(200).json({
+    message: "deleted",
+  });
+});
+app.patch("/api/notes/:id", async (req, res) => {
+  const { description } = req.body;
+  await noteModel.findByIdAndUpdate(req.params.id, { description });
 
+  res.status(200).json({
+    message: "updated",
+  });
+});
 
-app.delete("/api/notes/:id",async (req,res)=>{
+app.use("*name", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "/public", "index.html"));
+});
 
-    await noteModel.findByIdAndDelete(req.params.id)
-
-    res.status(200).json({
-        message:"deleted"
-    })
-})
-app.patch("/api/notes/:id",async (req,res)=>{
-    const {description}=req.body
-    await noteModel.findByIdAndUpdate(req.params.id, {description})
-
-    res.status(200).json({
-        message:"updated"
-    })
-})
-
-
-app.use('*name',(req,res)=>
-{
-    res.sendFile(path.join(__dirname,"..","/public" , "index.html"))
-})
-
-
-module.exports=app
+module.exports = app;
