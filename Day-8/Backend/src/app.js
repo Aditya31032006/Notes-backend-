@@ -30,6 +30,10 @@ app.post("/api/notes", async (req, res) => {
   });
 });
 
+app.get("/", (req,res)=>{
+  res.send("Notes API Running")
+})
+
 app.get("/api/notes", async (req, res) => {
   // const {title,description}=req.body
 
@@ -57,8 +61,8 @@ app.patch("/api/notes/:id", async (req, res) => {
   });
 });
 
-app.use("*name", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "/public", "index.html"));
+app.use("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
 
 module.exports = app;
