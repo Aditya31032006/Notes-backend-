@@ -2,16 +2,18 @@ const express = require("express");
 const app = express();
 const noteModel = require("./model/notes.model");
 const cors = require("cors");
+const helmet = require("helmet");
 const path = require("path");
 
 app.use(cors());
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; worker-src blob:",
-  );
-  next();
-});
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      workerSrc: ["blob:"],
+    },
+  }),
+);
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 app.post("/api/notes", async (req, res) => {
